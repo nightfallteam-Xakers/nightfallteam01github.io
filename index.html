@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nightfall Team</title>
+<title>Nightfall Team Interactive</title>
 <style>
   html, body {
     margin: 0; padding: 0;
@@ -24,9 +24,35 @@
     background: radial-gradient(circle, #fff 0%, #aaa 80%);
     border-radius: 50%;
     box-shadow: 0 0 30px 5px #fff;
+    z-index: 2;
   }
 
-  /* Information panel */
+  /* Chap menu */
+  #menu {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  #menu button {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid white;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  #menu button:hover {
+    background: rgba(255,255,255,0.3);
+  }
+
+  /* Information bo'limi */
   #info {
     position: absolute;
     bottom: 20px;
@@ -51,6 +77,16 @@
 
 <canvas id="stars"></canvas>
 <div id="moon"></div>
+
+<!-- Chap menu -->
+<div id="menu">
+  <button onclick="showInfo('Home')">Home</button>
+  <button onclick="showInfo('About')">About</button>
+  <button onclick="showInfo('Services')">Services</button>
+  <button onclick="showInfo('Projects')">Projects</button>
+  <button onclick="showInfo('Contact')">Contact</button>
+</div>
+
 <div id="info">
   <h2>Information</h2>
   <p>Welcome to Nightfall Team interactive demo site!</p>
@@ -79,15 +115,15 @@ for(let i=0;i<starCount;i++){
   });
 }
 
-// Sensor / mouse harakat
+// Kamera (device orientation) + fallback: mouse
 let moveX = 0;
 let moveY = 0;
 
 // Mobil orientation
 if(window.DeviceOrientationEvent){
   window.addEventListener("deviceorientation", (e)=>{
-    moveX = e.gamma / 10;
-    moveY = e.beta / 10;
+    moveX = e.gamma / 5;  // sekinroq harakat
+    moveY = e.beta / 5;
   });
 } else {
   // PC fallback: mouse
@@ -119,6 +155,12 @@ function updateStars(){
 }
 
 updateStars();
+
+// Menu button funksiyasi
+function showInfo(section){
+  const info = document.getElementById('info');
+  info.innerHTML = `<h2>${section}</h2><p>This is the ${section} section of Nightfall Team demo site.</p>`;
+}
 </script>
 
 </body>
