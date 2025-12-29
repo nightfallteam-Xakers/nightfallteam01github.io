@@ -2,164 +2,200 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Nightfall Team</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nightfall Team Interactive</title>
+
 <style>
-  html, body {
-    margin: 0; padding: 0;
-    width: 100%; height: 100%;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-    background: radial-gradient(ellipse at bottom, #0b1b2a 0%, #000 100%);
-    color: white;
-  }
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Arial, sans-serif;
+  background:radial-gradient(ellipse at bottom,#0b1b2a 0%,#000 100%);
+  color:white;
+}
 
-  /* Oy */
-  #moon {
-    position: absolute;
-    top: 50px;
-    right: 50px;
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, #fff 0%, #aaa 80%);
-    border-radius: 50%;
-    box-shadow: 0 0 30px 5px #fff;
-    z-index: 2;
-  }
+/* Canvas */
+canvas{
+  position:absolute;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
 
-  /* Chap menu */
-  #menu {
-    position: absolute;
-    top: 50px;
-    left: 20px;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
+/* Moon */
+#moon{
+  position:absolute;
+  top:40px;
+  right:40px;
+  width:100px;
+  height:100px;
+  background:radial-gradient(circle,#fff 0%,#aaa 80%);
+  border-radius:50%;
+  box-shadow:0 0 30px #fff;
+  z-index:2;
+}
 
-  #menu button {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid white;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
+/* Hamburger */
+#hamburger{
+  position:absolute;
+  top:30px;
+  left:30px;
+  font-size:30px;
+  cursor:pointer;
+  z-index:4;
+}
 
-  #menu button:hover {
-    background: rgba(255,255,255,0.3);
-  }
+/* Side Menu */
+#sideMenu{
+  position:fixed;
+  top:0;
+  left:-260px;
+  width:250px;
+  height:100%;
+  background:rgba(0,0,0,0.85);
+  padding:60px 20px;
+  transition:0.4s;
+  z-index:3;
+}
 
-  /* Information bo'limi */
-  #info {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    background: rgba(0,0,0,0.6);
-    padding: 15px;
-    border-radius: 10px;
-    max-width: 300px;
-    z-index: 2;
-  }
+#sideMenu button{
+  width:100%;
+  margin:10px 0;
+  padding:10px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid white;
+  color:white;
+  cursor:pointer;
+}
 
-  canvas {
-    position: absolute;
-    top:0; left:0;
-    width:100%;
-    height:100%;
-    z-index: 1;
-  }
+/* Login popup */
+#login{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0.8);
+  background:rgba(0,0,0,0.9);
+  padding:20px;
+  border-radius:10px;
+  display:none;
+  z-index:5;
+  transition:0.3s;
+}
+
+#login input{
+  width:200px;
+  padding:8px;
+  margin:10px 0;
+}
+
+#login button{
+  padding:8px 12px;
+  margin:5px;
+}
 </style>
 </head>
+
 <body>
 
 <canvas id="stars"></canvas>
 <div id="moon"></div>
 
-<!-- Chap menu -->
-<div id="menu">
-  <button onclick="showInfo('Home')">Home</button>
-  <button onclick="showInfo('About')">About</button>
-  <button onclick="showInfo('Services')">Services</button>
-  <button onclick="showInfo('Projects')">Projects</button>
-  <button onclick="showInfo('Contact')">Contact</button>
+<div id="hamburger" onclick="toggleMenu()">☰</div>
+
+<div id="sideMenu">
+  <button onclick="openLogin()">Home</button>
+  <button onclick="openLogin()">About</button>
+  <button onclick="openLogin()">Services</button>
+  <button onclick="openLogin()">Projects</button>
 </div>
 
-<div id="info">
-  <h2>Information</h2>
-  <p>Welcome to Nightfall Team interactive demo site!</p>
+<div id="login">
+  <h3>Login (Phone)</h3>
+  <input type="text" id="phone" placeholder="+998901234567">
+  <br>
+  <button onclick="send()">Login</button>
+  <button onclick="closeLogin()">Close</button>
+  <p id="status"></p>
 </div>
 
 <script>
-// Canvas va stars sozlash
-const canvas = document.getElementById('stars');
-const ctx = canvas.getContext('2d');
+/* ===== Stars Animation ===== */
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d");
 
-function resizeCanvas(){
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+function resize(){
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
 }
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+resize();
+window.onresize=resize;
 
-let stars = [];
-const starCount = 150;
-
-for(let i=0;i<starCount;i++){
+let stars=[];
+for(let i=0;i<150;i++){
   stars.push({
-    x: Math.random()*canvas.width,
-    y: Math.random()*canvas.height,
-    size: Math.random()*2+1,
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*2+1
   });
 }
 
-// Kamera (device orientation) + fallback: mouse
-let moveX = 0;
-let moveY = 0;
+let mx=0,my=0;
+document.addEventListener("mousemove",e=>{
+  mx=(e.clientX-innerWidth/2)/50;
+  my=(e.clientY-innerHeight/2)/50;
+});
 
-// Mobil orientation
-if(window.DeviceOrientationEvent){
-  window.addEventListener("deviceorientation", (e)=>{
-    moveX = e.gamma / 5;  // sekinroq harakat
-    moveY = e.beta / 5;
-  });
-} else {
-  // PC fallback: mouse
-  window.addEventListener("mousemove", (e)=>{
-    moveX = (e.clientX - window.innerWidth/2)/50;
-    moveY = (e.clientY - window.innerHeight/2)/50;
-  });
-}
-
-// Update stars
-function updateStars(){
+function draw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  for(let i=0;i<stars.length;i++){
-    let s = stars[i];
-    s.x += moveX;
-    s.y += moveY;
-
-    if(s.x<0) s.x = canvas.width;
-    if(s.x>canvas.width) s.x = 0;
-    if(s.y<0) s.y = canvas.height;
-    if(s.y>canvas.height) s.y = 0;
-
-    ctx.fillStyle = 'white';
+  stars.forEach(s=>{
+    s.x+=mx;
+    s.y+=my;
+    if(s.x<0)s.x=canvas.width;
+    if(s.y<0)s.y=canvas.height;
+    if(s.x>canvas.width)s.x=0;
+    if(s.y>canvas.height)s.y=0;
     ctx.beginPath();
-    ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle="white";
     ctx.fill();
-  }
-  requestAnimationFrame(updateStars);
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+
+/* ===== Menu ===== */
+let open=false;
+function toggleMenu(){
+  document.getElementById("sideMenu").style.left=open?"-260px":"0";
+  open=!open;
 }
 
-updateStars();
+/* ===== Login ===== */
+function openLogin(){
+  toggleMenu();
+  const l=document.getElementById("login");
+  l.style.display="block";
+  setTimeout(()=>l.style.transform="translate(-50%,-50%) scale(1)",10);
+}
 
-// Menu button funksiyasi
-function showInfo(section){
-  const info = document.getElementById('info');
-  info.innerHTML = `<h2>${section}</h2><p>This is the ${section} section of Nightfall Team demo site.</p>`;
+function closeLogin(){
+  const l=document.getElementById("login");
+  l.style.transform="translate(-50%,-50%) scale(0.8)";
+  setTimeout(()=>l.style.display="none",300);
+}
+
+function send(){
+  const phone=document.getElementById("phone").value;
+  if(!phone){
+    status.innerText="Raqam kiriting!";
+    return;
+  }
+  status.innerText="✅ Raqam qabul qilindi (demo)";
+  // Backend orqali Telegram botga yuboriladi
 }
 </script>
 
