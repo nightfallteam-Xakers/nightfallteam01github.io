@@ -5,17 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cyber Security Website</title>
 <style>
-  /* Basic reset */
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-  
+
   body {
-    background: #0d0d0d;
+    background: linear-gradient(120deg, #1a1a1a, #0d0d0d);
     color: #fff;
     overflow-x: hidden;
     position: relative;
   }
 
-  /* Star animation background */
+  /* Animated stars */
   body::before {
     content: '';
     position: fixed;
@@ -44,16 +43,8 @@
     z-index: 10;
   }
 
-  nav ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  nav ul li {
-    position: relative;
-  }
-
+  nav ul { list-style: none; display: flex; flex-wrap: wrap; }
+  nav ul li { position: relative; }
   nav ul li a {
     display: block;
     padding: 15px 25px;
@@ -61,13 +52,8 @@
     text-decoration: none;
     transition: 0.3s;
   }
+  nav ul li a:hover { background: #1e90ff; }
 
-  nav ul li a:hover {
-    background: #1e90ff;
-    color: #fff;
-  }
-
-  /* Dropdown menu */
   nav ul li ul {
     position: absolute;
     top: 100%;
@@ -77,34 +63,18 @@
     flex-direction: column;
     min-width: 180px;
   }
+  nav ul li:hover ul { display: flex; }
+  nav ul li ul li a { padding: 10px 20px; }
 
-  nav ul li:hover ul {
-    display: flex;
-  }
-
-  nav ul li ul li a {
-    padding: 10px 20px;
-  }
-
-  /* Sections */
   section {
     min-height: 100vh;
     padding: 100px 50px 50px 50px;
   }
 
-  h1, h2 {
-    margin-bottom: 20px;
-  }
+  h1, h2 { margin-bottom: 20px; }
 
-  /* Video and description */
-  .video-container {
-    margin: 20px 0;
-  }
-
-  video {
-    max-width: 100%;
-    border-radius: 10px;
-  }
+  .video-container { margin: 20px 0; }
+  video { max-width: 100%; border-radius: 10px; }
 
   .description {
     background: rgba(30, 30, 30, 0.7);
@@ -113,14 +83,11 @@
   }
 
   /* Smooth scroll */
-  html {
-    scroll-behavior: smooth;
-  }
+  html { scroll-behavior: smooth; }
 </style>
 </head>
 <body>
 
-<!-- Navigation -->
 <nav>
   <ul>
     <li><a href="#news">News</a></li>
@@ -132,7 +99,7 @@
       </ul>
     </li>
     <li><a href="#about">About</a></li>
-    <li><a href="#section4">Section 4</a></li>
+    <li><a href="#book">Book</a></li>
     <li><a href="#section5">Section 5</a></li>
     <li><a href="#section6">Section 6</a></li>
     <li><a href="#section7">Section 7</a></li>
@@ -140,11 +107,10 @@
   </ul>
 </nav>
 
-<!-- Sections -->
 <section id="news">
   <h1>News</h1>
   <div class="description">
-    <p>Bu yerda siz yangiliklarni qo'shasiz. Masalan, cyber security yangiliklari.</p>
+    <p>Bu yerda siz yangiliklarni qo'shasiz.</p>
   </div>
 </section>
 
@@ -157,18 +123,24 @@
     </video>
   </div>
   <div class="description">
-    <p>Lesson uchun tavsif bu yerda bo'ladi. Siz o'zingiz matn qo'shasiz.</p>
+    <p>Lesson uchun tavsif bu yerda bo'ladi.</p>
   </div>
 </section>
 
 <section id="about">
   <h1>About</h1>
   <div class="description">
-    <p>Bu bo‘limda siz o‘zingiz haqingizda yoki sayt haqida ma’lumot qo‘shasiz.</p>
+    <p>Bu bo‘limda siz o‘zingiz haqingizda ma’lumot qo‘shasiz.</p>
   </div>
 </section>
 
-<section id="section4"><h1>Section 4</h1></section>
+<section id="book">
+  <h1>Book</h1>
+  <div class="description">
+    <p>Bu bo‘lim alohida sahifa ham bo‘lishi mumkin. <a href="book.html" style="color:#1e90ff;">Book sahifasiga o‘ting</a></p>
+  </div>
+</section>
+
 <section id="section5"><h1>Section 5</h1></section>
 <section id="section6"><h1>Section 6</h1></section>
 <section id="section7"><h1>Section 7</h1></section>
