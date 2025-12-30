@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 1</title>
+<title>Lesson</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -11,8 +11,17 @@ body{
  background:#050505;
  color:#eee;
  font-family:Consolas,monospace;
+ overflow-x:hidden;
 }
 
+/* ===== Canvas Effect ===== */
+canvas{
+ position:fixed;
+ inset:0;
+ z-index:-1;
+}
+
+/* ===== Header ===== */
 header{
  padding:15px 20px;
  border-bottom:1px solid #222;
@@ -20,14 +29,19 @@ header{
  justify-content:space-between;
  align-items:center;
 }
+header h1{
+ letter-spacing:2px;
+ font-size:18px;
+}
 
+/* ===== Lesson Container ===== */
 .lesson{
  max-width:900px;
  margin:40px auto;
  padding:20px;
 }
 
-/* Video */
+/* ===== Video ===== */
 .video-box{
  border:1px solid #333;
  box-shadow:0 0 25px rgba(255,255,255,.08);
@@ -35,29 +49,44 @@ header{
 video{
  width:100%;
  background:black;
+ display:block;
 }
 
-/* Content */
+/* ===== Content ===== */
 .content{
  margin-top:30px;
 }
 .content h2{
  margin-bottom:15px;
+ letter-spacing:1px;
 }
 .content p{
  opacity:.8;
  line-height:1.7;
  margin-bottom:15px;
 }
+
+/* ===== Image ===== */
 .content img{
  max-width:100%;
  border:1px solid #333;
  margin:20px 0;
+ display:block;
 }
 
+/* ===== Footer ===== */
+footer{
+ text-align:center;
+ padding:30px;
+ opacity:.35;
+ font-size:12px;
+ border-top:1px solid #222;
+}
 </style>
 </head>
 <body>
+
+<canvas id="fx"></canvas>
 
 <header>
  <h1>LESSON 1</h1>
@@ -86,20 +115,71 @@ video{
   <h2>Cyber Security Introduction</h2>
 
   <p>
-   Ushbu darsda cyber security asoslari,
-   hacker fikrlashi va xavfsizlik tushunchalari o‘rganiladi.
+   Ushbu darsda cyber security asoslari, hacker fikrlashi
+   va tizimlar qanday ishlashi tushuntiriladi.
   </p>
 
-  <!-- RASM (o'zing qo'yasan) -->
+  <!-- RASM (o‘zing qo‘shasan) -->
   <img src="assets/img/lesson1.jpg" alt="lesson image">
 
   <p>
-   Bu joyga xohlagancha matn yozishing mumkin.
-   Hamma lesson bir xil style’da bo‘ladi.
+   Bu joyga dars davomiy tushuntirishlari yoziladi.
+   Barcha lesson sahifalari bir xil dark hacker style’da bo‘ladi.
   </p>
  </div>
 
 </section>
+
+<footer>
+ © Hacker Platform
+</footer>
+
+<script>
+/* ===== Mouse Shadow Effect ===== */
+const c=document.getElementById("fx");
+const ctx=c.getContext("2d");
+let w=c.width=innerWidth;
+let h=c.height=innerHeight;
+let particles=[];
+
+onmousemove=e=>{
+ for(let i=0;i<4;i++){
+  particles.push({
+   x:e.clientX,
+   y:e.clientY,
+   vx:(Math.random()-.5)*1.5,
+   vy:(Math.random()-.5)*1.5,
+   life:60,
+   r:Math.random()*2+1
+  });
+ }
+};
+
+function draw(){
+ ctx.clearRect(0,0,w,h);
+ particles.forEach((p,i)=>{
+  p.x+=p.vx;
+  p.y+=p.vy;
+  p.life--;
+
+  ctx.beginPath();
+  ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+  ctx.fillStyle="rgba(255,255,255,.8)";
+  ctx.shadowColor="white";
+  ctx.shadowBlur=12;
+  ctx.fill();
+
+  if(p.life<=0)particles.splice(i,1);
+ });
+ requestAnimationFrame(draw);
+}
+draw();
+
+onresize=()=>{
+ w=c.width=innerWidth;
+ h=c.height=innerHeight;
+};
+</script>
 
 </body>
 </html>
