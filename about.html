@@ -1,5 +1,200 @@
-<section>
- <h1>About</h1>
- <p>Bu joyga o‘zingiz haqingizda yozasiz.</p>
- <button class="btn" onclick="location.href='index.html'">Home</button>
-</section>
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+ background:#050505;
+ color:#eee;
+ font-family:Consolas,monospace;
+ overflow-x:hidden;
+}
+
+/* Canvas background */
+canvas{
+ position:fixed;
+ inset:0;
+ z-index:-1;
+}
+
+/* Header */
+header{
+ padding:15px 20px;
+ border-bottom:1px solid #222;
+ display:flex;
+ justify-content:center;
+}
+header h1{
+ font-size:22px;
+ letter-spacing:3px;
+ text-shadow:0 0 10px #fff;
+}
+
+/* Main */
+.main{
+ max-width:900px;
+ margin:60px auto;
+ padding:0 20px;
+}
+
+/* Box */
+.box{
+ background:#0d0d0d;
+ border:1px solid #333;
+ border-radius:10px;
+ padding:25px;
+ box-shadow:0 0 25px rgba(255,255,255,.05);
+ margin-bottom:25px;
+ animation:fadeUp .8s ease;
+}
+
+.box h2{
+ margin-bottom:10px;
+ letter-spacing:2px;
+}
+.box p{
+ line-height:1.7;
+ opacity:.85;
+}
+
+/* Stats */
+.stats{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+ gap:15px;
+ margin-top:20px;
+}
+.stat{
+ background:#111;
+ border:1px solid #333;
+ padding:15px;
+ border-radius:8px;
+ text-align:center;
+}
+.stat h3{
+ font-size:22px;
+}
+.stat span{
+ font-size:12px;
+ opacity:.6;
+}
+
+/* Footer */
+footer{
+ text-align:center;
+ padding:20px;
+ font-size:12px;
+ opacity:.3;
+ border-top:1px solid #222;
+}
+
+/* Animation */
+@keyframes fadeUp{
+ from{opacity:0;transform:translateY(20px)}
+ to{opacity:1;transform:translateY(0)}
+}
+</style>
+</head>
+<body>
+
+<canvas id="fx"></canvas>
+
+<header>
+ <h1>ABOUT PLATFORM</h1>
+</header>
+
+<div class="main">
+
+ <div class="box">
+  <h2>Who We Are</h2>
+  <p>
+   This platform is created for learning <b>Cyber Security</b>, 
+   understanding how systems work, and practicing ethical hacking 
+   techniques in a safe and legal environment.
+  </p>
+ </div>
+
+ <div class="box">
+  <h2>Our Mission</h2>
+  <p>
+   Our mission is to help beginners and advanced learners understand 
+   security concepts such as networks, web vulnerabilities, and system 
+   protection through real examples and practice.
+  </p>
+ </div>
+
+ <div class="box">
+  <h2>Platform Stats</h2>
+  <div class="stats">
+   <div class="stat">
+    <h3>20+</h3>
+    <span>Lessons</span>
+   </div>
+   <div class="stat">
+    <h3>10+</h3>
+    <span>Tools</span>
+   </div>
+   <div class="stat">
+    <h3>100%</h3>
+    <span>Practice Based</span>
+   </div>
+  </div>
+ </div>
+
+</div>
+
+<footer>
+ © Hacker Platform
+</footer>
+
+<script>
+/* Mouse particles */
+const c=document.getElementById("fx");
+const ctx=c.getContext("2d");
+let w=c.width=innerWidth;
+let h=c.height=innerHeight;
+let p=[];
+
+onmousemove=e=>{
+ for(let i=0;i<3;i++){
+  p.push({
+   x:e.clientX,
+   y:e.clientY,
+   vx:(Math.random()-.5)*1.2,
+   vy:(Math.random()-.5)*1.2,
+   life:50,
+   r:Math.random()*2+1
+  });
+ }
+};
+
+function draw(){
+ ctx.clearRect(0,0,w,h);
+ p.forEach((o,i)=>{
+  o.x+=o.vx;
+  o.y+=o.vy;
+  o.life--;
+  ctx.beginPath();
+  ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+  ctx.fillStyle="rgba(255,255,255,.7)";
+  ctx.shadowColor="#fff";
+  ctx.shadowBlur=10;
+  ctx.fill();
+  if(o.life<=0)p.splice(i,1);
+ });
+ requestAnimationFrame(draw);
+}
+draw();
+
+onresize=()=>{
+ w=c.width=innerWidth;
+ h=c.height=innerHeight;
+};
+</script>
+
+</body>
+</html>
