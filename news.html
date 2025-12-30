@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hacker News</title>
+<title>News | Hacker Platform</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{
  background:#050505;
- color:#0f0;
+ color:#fff;
  font-family:Consolas,monospace;
  overflow-x:hidden;
 }
@@ -21,160 +21,118 @@ canvas{
  z-index:-1;
 }
 
-/* Header */
-header{
- padding:15px 20px;
- border-bottom:1px solid #222;
+/* Top bar */
+.top{
+ position:fixed;
+ top:0;left:0;
+ width:100%;
+ padding:10px 20px;
  display:flex;
- justify-content:center;
+ justify-content:space-between;
  align-items:center;
-}
-header h1{
- letter-spacing:2px;
- font-size:22px;
- text-shadow:0 0 10px #0f0;
+ background:rgba(0,0,0,.6);
+ border-bottom:1px solid #222;
+ z-index:10;
 }
 
-/* News Container */
-.news-container{
+.top a{
+ color:#fff;
+ text-decoration:none;
+ opacity:.7;
+}
+.top a:hover{opacity:1}
+
+/* Content */
+.content{
  max-width:900px;
- margin:50px auto;
+ margin:80px auto 40px;
  padding:0 20px;
- display:flex;
- flex-direction:column;
- gap:20px;
+ line-height:1.8;
+ font-size:15px;
 }
 
-/* News Item (terminal style) */
+h1,h2{
+ margin-bottom:15px;
+ letter-spacing:1px;
+}
+
+/* News items */
 .news-item{
- background:#000;
- border:1px solid #0f0;
+ margin-bottom:25px;
  padding:15px;
- border-radius:5px;
- box-shadow:0 0 15px rgba(0,255,0,.1);
- opacity:0;
- transform:translateX(-20px);
- cursor:pointer;
- transition:all .4s;
+ border-left:3px solid #0f0;
+ background:rgba(0,255,0,.03);
+ transition:.3s;
 }
 .news-item:hover{
- background:#111;
- transform:translateX(0) scale(1.02);
-}
-
-/* News Title */
-.news-item h3{
- margin-bottom:8px;
- font-size:18px;
-}
-
-/* News Description */
-.news-item p{
- font-size:14px;
- line-height:1.5;
- opacity:.85;
-}
-
-/* Footer */
-footer{
- text-align:center;
- padding:20px;
- opacity:.3;
- font-size:12px;
- border-top:1px solid #222;
+ background:rgba(0,255,0,.1);
 }
 </style>
 </head>
 <body>
 
-<canvas id="fx"></canvas>
+<canvas id="bg"></canvas>
 
-<header>
- <h1>HACKER NEWS</h1>
-</header>
+<!-- TOP -->
+<div class="top">
+ <a href="index.html">⬅ BACK</a>
+ <div>NEWS</div>
+</div>
 
-<section class="news-container">
+<!-- CONTENT -->
+<div class="content" id="newsContent">
+ <h1>Cyber Security News</h1>
 
- <!-- News 1 -->
- <div class="news-item" onclick="location.href='lesson.html'">
-  <h3>New Cyber Security Course Released</h3>
-  <p>Learn the latest techniques in ethical hacking and penetration testing.</p>
+ <div class="news-item">
+  <h2>Yangilik 1</h2>
+  <p>2025 yil, Dasturchilar uchun yangi XSS himoyalash metodlari paydo bo‘ldi.</p>
  </div>
 
- <!-- News 2 -->
- <div class="news-item" onclick="location.href='lesson.html'">
-  <h3>Vulnerability in Popular Web App</h3>
-  <p>Security researchers discovered a new XSS vulnerability affecting millions of users.</p>
+ <div class="news-item">
+  <h2>Yangilik 2</h2>
+  <p>SQL Injection himoyasi: zamonaviy web frameworklar xavfsizlikni mustahkamladi.</p>
  </div>
 
- <!-- News 3 -->
- <div class="news-item" onclick="location.href='lesson.html'">
-  <h3>Network Attack Simulation</h3>
-  <p>Practice real-world attacks in a safe and controlled environment.</p>
+ <div class="news-item">
+  <h2>Yangilik 3</h2>
+  <p>Bug Bounty dasturlariga yangi platformalar qo‘shildi.</p>
  </div>
-
-</section>
-
-<footer>
- © Hacker Platform
-</footer>
+</div>
 
 <script>
-/* ===== Mouse Shadow Effect ===== */
-const c=document.getElementById("fx");
+/* ===== PARTICLES ===== */
+const c=document.getElementById("bg");
 const ctx=c.getContext("2d");
-let w=c.width=innerWidth;
-let h=c.height=innerHeight;
-let particles=[];
+let w=c.width=innerWidth,h=c.height=innerHeight;
+let parts=[];
 
 onmousemove=e=>{
- for(let i=0;i<4;i++){
-  particles.push({
+ for(let i=0;i<3;i++){
+  parts.push({
    x:e.clientX,
    y:e.clientY,
    vx:(Math.random()-.5)*1.5,
    vy:(Math.random()-.5)*1.5,
-   life:60,
-   r:Math.random()*2+1
+   l:60
   });
  }
 };
 
-function draw(){
+function animate(){
  ctx.clearRect(0,0,w,h);
- particles.forEach((p,i)=>{
+ parts.forEach((p,i)=>{
   p.x+=p.vx;
   p.y+=p.vy;
-  p.life--;
-
-  ctx.beginPath();
-  ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-  ctx.fillStyle="rgba(0,255,0,.8)";
-  ctx.shadowColor="lime";
-  ctx.shadowBlur=12;
-  ctx.fill();
-
-  if(p.life<=0)particles.splice(i,1);
+  p.l--;
+  ctx.fillStyle="rgba(255,255,255,.7)";
+  ctx.fillRect(p.x,p.y,2,2);
+  if(p.l<=0)parts.splice(i,1);
  });
- requestAnimationFrame(draw);
+ requestAnimationFrame(animate);
 }
-draw();
+animate();
 
-onresize=()=>{
- w=c.width=innerWidth;
- h=c.height=innerHeight;
-};
-
-/* ===== Animate news items ===== */
-const newsItems=document.querySelectorAll(".news-item");
-window.addEventListener("load",()=>{
- newsItems.forEach((item,i)=>{
-  setTimeout(()=>{
-   item.style.opacity="1";
-   item.style.transform="translateX(0)";
-  }, i*200);
- });
-});
+onresize=()=>{w=c.width=innerWidth;h=c.height=innerHeight};
 </script>
 
 </body>
