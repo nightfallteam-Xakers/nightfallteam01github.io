@@ -38,6 +38,7 @@ canvas{
  color:#fff;
  text-decoration:none;
  opacity:.7;
+ transition:.3s;
 }
 .top a:hover{opacity:1}
 
@@ -127,15 +128,6 @@ input{
 </audio>
 
 <script>
-/* ===== FULLSCREEN PC ===== */
-if(innerWidth>900){
- document.addEventListener("click",()=>{
-  if(!document.fullscreenElement){
-   document.documentElement.requestFullscreen().catch(()=>{});
-  }
- },{once:true});
-}
-
 /* ===== TERMINAL LOGIC ===== */
 const output=document.getElementById("output");
 const cmd=document.getElementById("cmd");
@@ -154,10 +146,11 @@ function write(text){
 
 function run(command){
  write("<span style='color:#0f0'>root@ai:~$</span> "+command);
+ const c=command.toLowerCase();
 
- switch(command.toLowerCase()){
+ switch(c){
   case "help":
-   write("Commands: help, sudo ai, whoami, clear");
+   write("Commands: help, sudo ai, whoami, time, date, ping, secret, clear");
    break;
   case "sudo ai":
    write("🤖 AI: Salom! Men virtual hacker assistantman.");
@@ -165,6 +158,18 @@ function run(command){
    break;
   case "whoami":
    write("user: anonymous hacker");
+   break;
+  case "time":
+   write("Current Time: " + new Date().toLocaleTimeString());
+   break;
+  case "date":
+   write("Current Date: " + new Date().toLocaleDateString());
+   break;
+  case "ping":
+   write("Pinging server... success ✅");
+   break;
+  case "secret":
+   write("Access Denied: You are not allowed to see this 🔒");
    break;
   case "clear":
    output.innerHTML="";
@@ -174,21 +179,14 @@ function run(command){
  }
 }
 
-function clearTerm(){
- output.innerHTML="";
-}
+function clearTerm(){output.innerHTML="";}
 
 /* ===== MUSIC ===== */
 let playing=false;
 function toggleMusic(){
  const m=document.getElementById("music");
- if(!playing){
-  m.play();
-  playing=true;
- }else{
-  m.pause();
-  playing=false;
- }
+ if(!playing){ m.play(); playing=true; } 
+ else{ m.pause(); playing=false; }
 }
 
 /* ===== PARTICLES ===== */
@@ -204,7 +202,7 @@ onmousemove=e=>{
    y:e.clientY,
    vx:(Math.random()-.5)*1.2,
    vy:(Math.random()-.5)*1.2,
-   l:50
+   life:60
   });
  }
 };
@@ -214,10 +212,10 @@ function animate(){
  parts.forEach((p,i)=>{
   p.x+=p.vx;
   p.y+=p.vy;
-  p.l--;
+  p.life--;
   ctx.fillStyle="rgba(255,255,255,.7)";
   ctx.fillRect(p.x,p.y,2,2);
-  if(p.l<=0)parts.splice(i,1);
+  if(p.life<=0) parts.splice(i,1);
  });
  requestAnimationFrame(animate);
 }
