@@ -30,7 +30,7 @@ canvas{
  display:flex;
  justify-content:space-between;
  align-items:center;
- background:rgba(0,0,0,.6);
+ background:rgba(0,0,0,.65);
  border-bottom:1px solid #222;
  z-index:10;
 }
@@ -46,33 +46,18 @@ canvas{
 /* Content */
 .content{
  max-width:900px;
- margin:80px auto 40px;
+ margin:90px auto 40px;
  padding:0 20px;
  line-height:1.8;
  font-size:15px;
 }
 
-h1,h2{
- margin-bottom:15px;
- letter-spacing:1px;
-}
-
-ul{
- margin-left:20px;
- margin-bottom:20px;
-}
-
-ul li{
- margin-bottom:10px;
-}
-
-a{
- color:#00bfff;
- text-decoration:none;
-}
-a:hover{
- text-decoration:underline;
-}
+/* Headings */
+h1,h2{margin-bottom:15px;letter-spacing:1px;}
+ul{margin-left:20px;margin-bottom:20px;}
+ul li{margin-bottom:10px;}
+a{color:#00bfff;text-decoration:none;}
+a:hover{text-decoration:underline;}
 
 /* Typing animation */
 .typing {
@@ -82,16 +67,8 @@ a:hover{
  overflow: hidden;
  animation: typing 3s steps(80) 1 forwards, blink 0.7s step-end infinite alternate;
 }
-
-@keyframes typing {
- 0% { width: 0; }
- 100% { width: 100%; }
-}
-
-@keyframes blink {
- 0%,100% { border-color: transparent; }
- 50% { border-color: #00ff9c; }
-}
+@keyframes typing {0% { width: 0; } 100% { width: 100%; }}
+@keyframes blink {0%,100% { border-color: transparent; } 50% { border-color: #00ff9c; }}
 </style>
 </head>
 <body>
@@ -107,7 +84,6 @@ a:hover{
 <!-- CONTENT -->
 <div class="content">
  <h1><span class="typing" id="title">Nightfall Team haqida</span></h1>
-
  <p id="text"></p>
 
  <h2>Asosiy Skillarimiz:</h2>
@@ -121,7 +97,7 @@ a:hover{
  <h2>Jamoa haqida:</h2>
  <ul>
   <li>Nightfall Team — 2024-yil tashkil topgan</li>
-  <li>Owner: Nightfall Country -  Uzbekistan</li>
+  <li>Owner: Nightfall Country - Uzbekistan</li>
   <li>Admin: Dark Force Country - Uzbekistan</li>
   <li>Email: <a href="mailto:nightfallteam02@gmail.com">nightfallteam02@gmail.com</a></li>
   <li>Instagram: <a href="https://www.instagram.com/nightfall_team_701" target="_blank">nightfall_team_701</a></li>
@@ -141,9 +117,9 @@ onmousemove=e=>{
   parts.push({
    x:e.clientX,
    y:e.clientY,
-   vx:(Math.random()-.5)*1.5,
-   vy:(Math.random()-.5)*1.5,
-   l:60
+   vx:(Math.random()-.5)*1.2,
+   vy:(Math.random()-.5)*1.2,
+   life:60
   });
  }
 };
@@ -153,22 +129,15 @@ function animate(){
  parts.forEach((p,i)=>{
   p.x+=p.vx;
   p.y+=p.vy;
-  p.l--;
-  ctx.fillStyle="rgba(255,255,255,.7)";
+  p.life--;
+  ctx.fillStyle="rgba(255,255,255,.6)";
   ctx.fillRect(p.x,p.y,2,2);
-  if(p.l<=0)parts.splice(i,1);
+  if(p.life<=0) parts.splice(i,1);
  });
  requestAnimationFrame(animate);
 }
 animate();
 onresize=()=>{w=c.width=innerWidth;h=c.height=innerHeight};
-
-/* ===== MENU ===== */
-fetch("menu.html")
- .then(res => res.text())
- .then(data => {
-   document.body.insertAdjacentHTML("beforeend", data);
- });
 
 /* ===== TYPING TEXT ===== */
 const text = "Nightfall Team cyber security darslari, amaliy mashqlar va bilimlarni bir joyda jamlash uchun yaratilgan Education platforma. Maqsad – foydalanuvchilarga hacker uslubi bilan o‘rganish va nazariy bilimni mustahkamlash imkonini berish.";
