@@ -10,9 +10,10 @@
 
 body{
  background:#050505;
- color:#fff;
+ color:#eee;
  font-family:Consolas,monospace;
  min-height:100vh;
+ overflow-x:hidden;
 }
 
 /* TOP */
@@ -24,70 +25,120 @@ body{
  display:flex;
  justify-content:space-between;
  align-items:center;
- background:rgba(0,0,0,.7);
- border-bottom:1px solid #222;
- backdrop-filter:blur(4px);
+ background:rgba(0,0,0,.75);
+ border-bottom:1px solid #1c1c1c;
+ backdrop-filter:blur(6px);
  z-index:10;
 }
 
 .top a{
- color:#fff;
+ color:#ccc;
  text-decoration:none;
- opacity:.7;
 }
-.top a:hover{opacity:1}
+.top a:hover{color:#fff}
 
 /* SHOP */
 .shop{
- padding:120px 30px 40px;
+ padding:120px 30px 120px;
  display:grid;
  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
- gap:30px;
+ gap:28px;
 }
 
 /* CARD */
 .card{
- background:#0b0b0b;
- border:1px solid #222;
+ background:#0c0c0c;
+ border:1px solid #1f1f1f;
  padding:25px;
- border-radius:10px;
+ border-radius:12px;
  display:flex;
  flex-direction:column;
  justify-content:space-between;
- transition:.3s;
+ transition:.35s ease;
 }
 
 .card:hover{
  transform:translateY(-8px);
  border-color:#444;
+ box-shadow:0 10px 30px #000;
 }
 
-.card h2{font-size:18px;margin-bottom:10px}
-.card p{font-size:13px;opacity:.7;line-height:1.6;margin-bottom:20px}
+.card h2{
+ font-size:17px;
+ margin-bottom:10px;
+ color:#fff;
+}
+
+.card p{
+ font-size:13px;
+ opacity:.7;
+ line-height:1.6;
+ margin-bottom:20px;
+}
 
 .price{
- font-size:20px;
+ font-size:18px;
  letter-spacing:1px;
  margin-bottom:15px;
+ color:#fff;
 }
 
 /* BUY */
 .buy{
  padding:12px;
  background:#000;
- border:1px solid #444;
- color:#fff;
+ border:1px solid #333;
+ color:#eee;
  cursor:pointer;
  letter-spacing:2px;
  transition:.3s;
 }
-.buy:hover{background:#111}
+.buy:hover{
+ background:#111;
+ border-color:#777;
+}
 
-.info{
- margin-top:12px;
- font-size:11px;
- opacity:.5;
- text-align:center;
+/* FOOTER LED */
+.footer{
+ position:fixed;
+ bottom:18px;
+ width:100%;
+ overflow:hidden;
+ pointer-events:none;
+}
+
+.led{
+ display:inline-block;
+ white-space:nowrap;
+ padding-left:100%;
+ font-size:13px;
+ letter-spacing:6px;
+ color:#fff;
+ animation:move 18s linear infinite;
+ text-shadow:0 0 8px #fff;
+}
+
+@keyframes move{
+ from{transform:translateX(0)}
+ to{transform:translateX(-100%)}
+}
+
+/* MOUSE TRAIL */
+.trail{
+ position:fixed;
+ width:6px;
+ height:6px;
+ border-radius:50%;
+ background:rgba(255,255,255,.9);
+ pointer-events:none;
+ animation:fade .8s linear forwards;
+}
+
+@keyframes fade{
+ to{
+  opacity:0;
+  transform:scale(2);
+ }
 }
 </style>
 </head>
@@ -100,54 +151,57 @@ body{
 
 <div class="shop">
 
- <!-- CARD 1 -->
- <div class="card">
-  <div>
-   <h2>Basic Hacking Course</h2>
-   <p>Cyber Security asoslari, Linux, Network va boshlang‘ich bug bounty.</p>
-  </div>
-  <div>
-   <div class="price">$10</div>
-   <button class="buy" onclick="buy('Basic Hacking Course')">BUY</button>
-   <div class="info">Buy bosgandan keyin Ownerga yozing</div>
-  </div>
- </div>
+<script>
+const products=[
+ ["Basic Hacking Course","Cyber Security asoslari va boshlang‘ich hacking.","_ sum"],
+ ["Bug Bounty Pro","Real platformalar va amaliy testlar.","$25"],
+ ["Private Mentorship","1-on-1 mentorlik va yopiq darslar.","$50"],
+ ["Linux Mastery","Linux komandalar va xavfsizlik.","$15"],
+ ["Web Security","XSS, SQLi, CSRF.","$20"],
+ ["Pentest Toolkit","Kerakli hacking tool’lar.","$18"],
+ ["Network Hacking","Wi-Fi va tarmoq hujumlari.","$22"],
+ ["CTF Training","CTF mashg‘ulotlari.","$12"],
+ ["OSINT Pro","Ma’lumot yig‘ish.","$14"],
+ ["Dark Web Guide","Xavfsiz foydalanish.","$30"]
+];
 
- <!-- CARD 2 -->
- <div class="card">
-  <div>
-   <h2>Bug Bounty Pro</h2>
-   <p>Real platformalar, vulnerability turlari va amaliy testlar.</p>
-  </div>
-  <div>
-   <div class="price">$25</div>
-   <button class="buy" onclick="buy('Bug Bounty Pro')">BUY</button>
-   <div class="info">Buy bosgandan keyin Ownerga yozing</div>
-  </div>
+document.write(products.map(p=>`
+<div class="card">
+ <div>
+  <h2>${p[0]}</h2>
+  <p>${p[1]}</p>
  </div>
-
- <!-- CARD 3 -->
- <div class="card">
-  <div>
-   <h2>Private Mentorship</h2>
-   <p>1-on-1 yordam, real loyiha, yopiq darslar va maslahatlar.</p>
-  </div>
-  <div>
-   <div class="price">$50</div>
-   <button class="buy" onclick="buy('Private Mentorship')">BUY</button>
-   <div class="info">Buy bosgandan keyin Ownerga yozing</div>
-  </div>
+ <div>
+  <div class="price">${p[2]}</div>
+  <button class="buy" onclick="buy('${p[0]}')">BUY</button>
  </div>
+</div>
+`).join(""));
+</script>
 
+</div>
+
+<div class="footer">
+ <div class="led">N I G H T F A L L&nbsp;&nbsp;T E A M&nbsp;&nbsp;—&nbsp;&nbsp;</div>
 </div>
 
 <script>
 function buy(product){
- const msg = encodeURIComponent(
-  `Hello, I want to buy:\n\nProduct: ${product}\nFrom: Nightfall Shop`
+ const msg=encodeURIComponent(
+  `Hello, I want to buy:\nProduct: ${product}\nFrom: Nightfall Shop`
  );
- window.open(`https://t.me/Nightfallmxx?text=${msg}`, "_blank");
+ window.open(`https://t.me/Nightfallmxx?text=${msg}`,"_blank");
 }
+
+/* MOUSE TRAIL */
+document.addEventListener("mousemove",e=>{
+ const t=document.createElement("div");
+ t.className="trail";
+ t.style.left=e.clientX+"px";
+ t.style.top=e.clientY+"px";
+ document.body.appendChild(t);
+ setTimeout(()=>t.remove(),800);
+});
 </script>
 
 </body>
